@@ -1,0 +1,55 @@
+# Build directories
+build/
+Release/
+Debug/
+x64/
+
+# Compiled binaries
+lanchat
+lanchat.exe
+*.exe
+*.o
+*.obj
+*.so
+*.dylib
+*.dll
+*.lib
+*.a
+
+# Runtime data
+data/messages.json
+data/*.json
+
+# IDE files
+.vscode/
+.vs/
+*.vcxproj
+*.vcxproj.filters
+*.vcxproj.user
+*.sln
+*.suo
+*.user
+.idea/
+*.iml
+
+# CMake files
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+*.cmake
+!CMakeLists.txt
+
+# System files
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Log files
+*.log
+
+# Temporary files
+*.tmp
+*.temp
+*~
+.#*
+#*#

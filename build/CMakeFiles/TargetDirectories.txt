@@ -1,0 +1,3 @@
+C:/Users/desk/Desktop/lanchatapp/build/CMakeFiles/lanchat.dir
+C:/Users/desk/Desktop/lanchatapp/build/CMakeFiles/edit_cache.dir
+C:/Users/desk/Desktop/lanchatapp/build/CMakeFiles/rebuild_cache.dir
