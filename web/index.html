@@ -1,3 +1,4 @@
+<!-- web/index.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,36 +9,35 @@
 </head>
 <body>
     <div class="chat-container">
-        <!-- Header -->
         <div class="chat-header">
             <div class="header-info">
                 <h1>LAN Chat</h1>
                 <span id="peer-count">0 peers online</span>
             </div>
             <div class="header-actions">
-                <button id="settings-btn" class="icon-btn">⚙️</button>
-                <button id="peers-btn" class="icon-btn">👥</button>
+                <button class="icon-btn" id="peers-btn" title="View Peers">👥</button>
+                <button class="icon-btn" id="settings-btn" title="Settings">⚙️</button>
             </div>
         </div>
-
-        <!-- Messages Area -->
+        
         <div class="messages-container" id="messages-container">
             <div class="welcome-message">
                 <p>Welcome to LAN Chat! 🎉</p>
                 <p>Start chatting with other users on your local network.</p>
             </div>
         </div>
-
-        <!-- Input Area -->
+        
         <div class="input-container">
             <div class="input-wrapper">
-                <input type="text" id="message-input" placeholder="Type a message..." maxlength="1000">
-                <button id="send-btn" class="send-button">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M2 21L23 12L2 3V10L17 12L2 14V21Z" fill="currentColor"/>
-                    </svg>
+                <textarea id="message-input" placeholder="Type a message..." rows="1"></textarea>
+                <button class="send-button" id="send-btn">
+                    <span>➤</span>
                 </button>
             </div>
+        </div>
+        
+        <div class="status-bar">
+            <span id="status-text">Ready</span>
         </div>
     </div>
 
@@ -46,14 +46,15 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h2>Settings</h2>
-                <button class="close-btn" id="close-settings">&times;</button>
+                <button class="close-btn" id="close-settings">×</button>
             </div>
             <div class="modal-body">
                 <div class="setting-group">
                     <label for="username-input">Username:</label>
-                    <input type="text" id="username-input" placeholder="Enter your username" maxlength="50">
-                    <button id="save-username">Save</button>
+                    <input type="text" id="username-input" maxlength="50" placeholder="Enter your username">
+                    <button id="save-username">Save Username</button>
                 </div>
+                
                 <div class="setting-group">
                     <label for="theme-select">Theme:</label>
                     <select id="theme-select">
@@ -61,6 +62,7 @@
                         <option value="dark">Dark</option>
                     </select>
                 </div>
+                
                 <div class="setting-group">
                     <button id="clear-messages">Clear All Messages</button>
                 </div>
@@ -72,8 +74,8 @@
     <div id="peers-modal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
-                <h2>Connected Peers</h2>
-                <button class="close-btn" id="close-peers">&times;</button>
+                <h2>Network Peers</h2>
+                <button class="close-btn" id="close-peers">×</button>
             </div>
             <div class="modal-body">
                 <div id="peers-list">
@@ -81,11 +83,6 @@
                 </div>
             </div>
         </div>
-    </div>
-
-    <!-- Status Bar -->
-    <div class="status-bar" id="status-bar">
-        <span id="status-text">Ready</span>
     </div>
 
     <script src="app.js"></script>

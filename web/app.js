@@ -1,7 +1,7 @@
 // LAN Chat Application JavaScript
 class LanChat {
     constructor() {
-        this.apiUrl = '';
+        this.apiUrl = '';  // Base URL (empty for relative paths)
         this.username = localStorage.getItem('lanChatUsername') || '';
         this.theme = localStorage.getItem('lanChatTheme') || 'light';
         this.lastMessageCount = 0;
@@ -134,7 +134,7 @@ class LanChat {
 
         try {
             this.sendBtn.disabled = true;
-            const response = await fetch('/api/messages', {
+            const response = await fetch('/messages', {  // Fixed: Removed /api/ prefix
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -150,7 +150,7 @@ class LanChat {
                 this.loadMessages();
                 this.setStatus('Message sent');
             } else {
-                throw new Error(`HTTP ${response.status}`);
+                throw new Error(`Server error: ${response.status}`);
             }
         } catch (error) {
             console.error('Failed to send message:', error);
@@ -163,9 +163,9 @@ class LanChat {
 
     async loadMessages() {
         try {
-            const response = await fetch('/api/messages');
+            const response = await fetch('/messages');  // Fixed: Removed /api/ prefix
             if (!response.ok) {
-                throw new Error(`HTTP ${response.status}`);
+                throw new Error(`Server error: ${response.status}`);
             }
 
             const messages = await response.json();
@@ -177,11 +177,13 @@ class LanChat {
                 
                 if (messages.length > 0) {
                     this.setStatus(`${messages.length} messages loaded`);
+                } else {
+                    this.setStatus('No messages yet');
                 }
             }
         } catch (error) {
             console.error('Failed to load messages:', error);
-            this.setStatus('Failed to load messages', 'error');
+            this.setStatus('Failed to load messages - Check connection or server', 'error');
         }
     }
 
@@ -253,9 +255,9 @@ class LanChat {
 
     async loadPeers() {
         try {
-            const response = await fetch('/api/peers');
+            const response = await fetch('/peers');  // Fixed: Removed /api/ prefix
             if (!response.ok) {
-                throw new Error(`HTTP ${response.status}`);
+                throw new Error(`Server error: ${response.status}`);
             }
 
             const peers = await response.json();
@@ -263,7 +265,7 @@ class LanChat {
             this.updatePeerCount(peers.length);
         } catch (error) {
             console.error('Failed to load peers:', error);
-            this.peersList.innerHTML = '<p style="color: #e53e3e;">Failed to load peers</p>';
+            this.peersList.innerHTML = '<p style="color: #e53e3e;">Failed to load peers - Check connection or server</p>';
         }
     }
 
@@ -286,10 +288,10 @@ class LanChat {
             infoDiv.className = 'peer-info';
 
             const nameH3 = document.createElement('h3');
-            nameH3.textContent = peer.id;
+            nameH3.textContent = peer.id || 'Unknown';
 
             const addressP = document.createElement('p');
-            addressP.textContent = peer.address;
+            addressP.textContent = peer.address || 'Unknown address';
 
             infoDiv.appendChild(nameH3);
             infoDiv.appendChild(addressP);
@@ -309,13 +311,18 @@ class LanChat {
         }
 
         try {
-            // This would require implementing a DELETE endpoint
-            // For now, we'll just reload and show a message
-            this.setStatus('Clear messages feature not implemented yet');
-            this.hideSettings();
+            const response = await fetch('/clear', { method: 'POST' });  // Assumes you add /clear endpoint in backend
+            if (response.ok) {
+                this.setStatus('Messages cleared');
+                this.loadMessages();
+            } else {
+                throw new Error(`Server error: ${response.status}`);
+            }
         } catch (error) {
             console.error('Failed to clear messages:', error);
             this.setStatus('Failed to clear messages', 'error');
+        } finally {
+            this.hideSettings();
         }
     }
 
@@ -323,10 +330,12 @@ class LanChat {
         this.statusText.textContent = message;
         this.statusText.style.color = type === 'error' ? '#e53e3e' : '#8696a0';
         
-        // Clear status after 3 seconds
+        // Clear status after 3 seconds unless it's an error
         setTimeout(() => {
-            this.statusText.textContent = 'Ready';
-            this.statusText.style.color = '#8696a0';
+            if (type !== 'error') {
+                this.statusText.textContent = 'Ready';
+                this.statusText.style.color = '#8696a0';
+            }
         }, 3000);
     }
 
@@ -335,10 +344,10 @@ class LanChat {
         this.loadMessages();
         this.loadPeers();
 
-        // Poll for new messages every 2 seconds
+        // Poll for new messages every 5 seconds (increased for efficiency)
         this.pollInterval = setInterval(() => {
             this.loadMessages();
-        }, 2000);
+        }, 5000);
 
         // Poll for peers every 30 seconds
         this.peerPollInterval = setInterval(() => {
