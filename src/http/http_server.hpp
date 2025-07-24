@@ -1,4 +1,3 @@
-// src/http/http_server.hpp
 #pragma once
 
 #include <string>

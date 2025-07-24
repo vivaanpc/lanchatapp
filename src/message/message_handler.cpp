@@ -1,11 +1,9 @@
-// src/message/message_handler.cpp
-
 #include "message_handler.hpp"
 #include <fstream>
 #include <iostream>
 #include <nlohmann/json.hpp>
-#include <exception>  // For std::exception in catch blocks
-#include <mutex>      // For std::lock_guard
+#include <exception>
+#include <mutex>
 
 using json = nlohmann::json;
 

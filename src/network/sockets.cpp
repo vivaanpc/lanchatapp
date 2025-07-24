@@ -16,7 +16,6 @@ void SocketUtils::cleanup() {
 #endif
 }
 
-// UDPSocket
 UDPSocket::UDPSocket() {
     sock = socket(AF_INET, SOCK_DGRAM, 0);
 }

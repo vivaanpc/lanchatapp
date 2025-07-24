@@ -1,5 +1,5 @@
-// src/message/message.hpp
 #pragma once
+
 #include <string>
 
 struct Message {

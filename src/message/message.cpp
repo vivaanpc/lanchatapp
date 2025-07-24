@@ -1,4 +1,3 @@
-// src/message/message.cpp
 #include "message.hpp"
 #include "../util/utils.hpp"
 #include <random>

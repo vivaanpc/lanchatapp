@@ -134,7 +134,7 @@ class LanChat {
 
         try {
             this.sendBtn.disabled = true;
-            const response = await fetch('/messages', {  // Fixed: Removed /api/ prefix
+            const response = await fetch('/messages', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -163,14 +163,13 @@ class LanChat {
 
     async loadMessages() {
         try {
-            const response = await fetch('/messages');  // Fixed: Removed /api/ prefix
+            const response = await fetch('/messages');
             if (!response.ok) {
                 throw new Error(`Server error: ${response.status}`);
             }
 
             const messages = await response.json();
             
-            // Only update if message count changed
             if (messages.length !== this.lastMessageCount) {
                 this.displayMessages(messages);
                 this.lastMessageCount = messages.length;
@@ -245,7 +244,7 @@ class LanChat {
                 hour12: false
             });
         } catch (error) {
-            return timestamp; // Fallback to original string
+            return timestamp;
         }
     }
 
@@ -255,7 +254,7 @@ class LanChat {
 
     async loadPeers() {
         try {
-            const response = await fetch('/peers');  // Fixed: Removed /api/ prefix
+            const response = await fetch('/peers');
             if (!response.ok) {
                 throw new Error(`Server error: ${response.status}`);
             }
@@ -311,7 +310,7 @@ class LanChat {
         }
 
         try {
-            const response = await fetch('/clear', { method: 'POST' });  // Assumes you add /clear endpoint in backend
+            const response = await fetch('/clear', { method: 'POST' });
             if (response.ok) {
                 this.setStatus('Messages cleared');
                 this.loadMessages();
@@ -330,7 +329,6 @@ class LanChat {
         this.statusText.textContent = message;
         this.statusText.style.color = type === 'error' ? '#e53e3e' : '#8696a0';
         
-        // Clear status after 3 seconds unless it's an error
         setTimeout(() => {
             if (type !== 'error') {
                 this.statusText.textContent = 'Ready';
@@ -340,16 +338,13 @@ class LanChat {
     }
 
     startPolling() {
-        // Load initial data
         this.loadMessages();
         this.loadPeers();
 
-        // Poll for new messages every 5 seconds (increased for efficiency)
         this.pollInterval = setInterval(() => {
             this.loadMessages();
         }, 5000);
 
-        // Poll for peers every 30 seconds
         this.peerPollInterval = setInterval(() => {
             this.loadPeers();
         }, 30000);
@@ -367,12 +362,10 @@ class LanChat {
     }
 }
 
-// Initialize the application when DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
     window.lanChat = new LanChat();
 });
 
-// Handle page visibility for efficient polling
 document.addEventListener('visibilitychange', () => {
     if (window.lanChat) {
         if (document.hidden) {
@@ -383,7 +376,6 @@ document.addEventListener('visibilitychange', () => {
     }
 });
 
-// Handle browser close/refresh
 window.addEventListener('beforeunload', () => {
     if (window.lanChat) {
         window.lanChat.stopPolling();

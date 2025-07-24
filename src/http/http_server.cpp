@@ -1,5 +1,3 @@
-// src/http/http_server.cpp
-
 #include "http_server.hpp"
 #include <iostream>
 #include <sstream>
